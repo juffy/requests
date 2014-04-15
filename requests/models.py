@@ -408,9 +408,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
 
         is_stream = all([
             hasattr(data, '__iter__'),
-            not isinstance(data, basestring),
-            not isinstance(data, list),
-            not isinstance(data, dict)
+            not isinstance(data, (basestring, list, tuple, dict))
         ])
 
         try:
@@ -575,6 +573,7 @@ class Response(object):
 
         # pickled objects do not have .raw
         setattr(self, '_content_consumed', True)
+        setattr(self, 'raw', None)
 
     def __repr__(self):
         return '<Response [%s]>' % (self.status_code)
